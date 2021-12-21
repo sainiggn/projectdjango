@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Video Categories</h2>
+    <div class="row">
+    {% for c in categories %}
+            <div class="col-md-6">
+                <h5><a href="{% url 'video:catvideo' c.slug %}">{{ c.name }}</a></h5>
+                <img style="height:120px;width:150px" src="{{c.img.url}}">
+            </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock content %} 

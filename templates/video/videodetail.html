@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load embed_video_tags %}
+{% load static %} 
+{% load extras %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>{{videos.title}}</h2>
+            <div class="container embed-responsive embed-responsive-16by9 px-3" id="vid">
+             {% video videos.video 'small' %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% if user.is_authenticated %}
+            <div>
+                <form method="POST" action="/video/videocomment">
+                {% csrf_token %}
+                Post a Comment:<input type="text" name="comment">
+                <input type="hidden" name="parentSno" value="">
+                <input type="hidden" name="videoSno" value="{{ videos.id }}">
+                <input type="submit" value="Post">
+                </fom>
+            </div>
+        {% else %}
+        <div class="col">
+            <h2><a href="/login?next={% firstof request.path '/'%}">Login</a> or <a href="{% url 'home:register' %}?next={% firstof request.path '/' %}">Register</a>  to Comment</h2>
+        </div>
+        {% endif %}
+    </div>
+    <div class="row">
+    <h3>{{comments.count}} {% if comments.count == 0 %} No Comment {% elif comments.count == 1 %} Comment {% else %} Comments {% endif %}</h3>
+    {% for comment in comments %}
+        <div class="col">
+            <div class="col-md-2">
+                <img style="width:100px" src="{% static 'images/user.jpg' %}">
+            </div>
+            <div class="col-md-10">
+                <p><strong>{{comment.user}}</strong> <span>{{comment.timestamp}}</span></p>
+                <p>{{ comment.comment}}</p>
+                <div class="reply mx-0">
+                    {% if user.is_authenticated %}
+                    <button class="btn btn-sm btn-primary" type="button" data-toggle="collapse" data-target="#replyBox{{comment.id}}" aria-expanded="false" aria-controls="replyBox{{comment.id}}">
+                        Reply
+                    </button>
+                    <div class="collapse" id="replyBox{{comment.id}}">
+                        <div class="card card-body my-2">
+                            <form method="POST" action="/video/videocomment">
+                            {% csrf_token %}
+                                Post a Reply:<input type="text" name="comment">
+                                <input type="hidden" name="parentSno" value="{{comment.id}}">
+                                <input type="hidden" name="videoSno" value="{{ videos.id }}">
+                                <input type="submit" value="Post">
+                            </fom>
+                        </div>
+                    </div>
+                    {% else %}
+                    <button class="btn btn-sm btn-primary" type="button" data-toggle="collapse" data-target="#replyBox{{comment.id}}" aria-expanded="false" aria-controls="replyBox{{comment.id}}" disabled>
+                       Reply
+                    </button>
+                    {% endif %}
+                    <div class="replies my-2">
+                        {% comment %} {% for reply in repDict|get_val:comment.id %} {% endcomment %}
+                        {% for reply in repDict|get_val:comment.id %}
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img class="rounded  -auto d-block" src="{% static 'images/user.jpg' %}" alt="" style="width: 67px;"> 
+                            </div>
+                            <div class="col-md-10">
+                                <b>{{reply.user.username}}</b> &nbsp; <span class="badge badge-secondary" style="font-size: 13px;">{{reply.timestamp}}</span>
+                                <div>{{ reply.comment }}</div>
+
+                        </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock content%}

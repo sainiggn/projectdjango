@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <form action="register" method="POST">
+            {% csrf_token %}
+            {% if request.GET.next %}
+                <input type="hidden" name="next" value="{{request.GET.next}}">
+              {% endif %}  
+            <div class="mb-3">
+                <label for="firstname" class="form-label">First Name</label>
+                <input type="text" class="form-control" name="firstname" id="firstname">
+            </div>
+            <div class="mb-3">
+                <label for="lastname" class="form-label">Last Name</label>
+                <input type="text" class="form-control" name="lastname" id="lastname">
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" id="username">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" id="email">
+            </div>
+            <div class="mb-3">
+                <label for="pass" class="form-label">Password</label>
+                <input type="password" class="form-control" name="pass" id="pass">
+            </div>
+            <div class="mb-3">
+                <label for="confpass" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" name="confpass" id="confpass">
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+</div>
+<h3> Request Object attributes</h3>
+<ul>
+    <li>{{ request.scheme }}</li>
+    <li>{{ request.method }}</li>
+    <li>{{ request.path }}</li>
+    <li>{{ request.GET }}</li>
+    <li>{{ request.POST }}</li>
+    <li>{{ request.user }}</li>
+
+</ul>
+{% endblock content %}

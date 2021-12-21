@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h2>Welcome to Search page</h2>
+        <div class="col">    
+            {% if posts|length < 1 %}
+            <p>Your search query - <b>{{query}}</b> did not match any documents.</p>
+            {% endif %}
+            {% for p in posts %}
+                <h2><a href="{% url 'blog:postdetail' p.slug %}">{{p.title}}</a></h2>
+                <span>Author: {{p.author}}</span>
+                <p>{{p.desc}}</p>  
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Product Detail</h2>
+    <div class="row" id="{{product.product_id}}">
+             <div class="col-md-4">
+                 <img style="max-width:100%;" src="{{product.img.url}}">
+             </div>
+             <div class="col-md-8">
+                 <h3>{{product.name}}</h3>
+                 <strong><span>Price: {{product.price}}</span></strong>
+                 <br/>
+                 <p>{{product.desc}}</p>
+                 <button>Add to Cart</button>
+             </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-2" style="text-align:center;">
+            <h5>Categories</h5>
+            {% for c in category %}
+                <div class="category-list" style="margin-top:20px;">
+                    <a href="{% url 'products:catproducts' c.slug %}" style="text-decoration:none;"><h5 style="color:black;">{{c.name}}</h5></a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-10">
+                {% for product in products %}
+                    <div class="col-md-6">
+                        <div class="productimg" width="100%" style="margin:auto;max-width:100%;text-align:center;max-height:350px;">
+                            <img width="280" height="auto" style="max-height:350px;" src="{{product.img.url}}">
+                        </div>
+                        <div class="productinfo">
+                            <a href="{% url 'products:productdetail' product.slug %}"><h5>{{product.name}}</h5></a>
+                            <span style="font-weight:bold;">Price: {{product.price}}</span>
+                            <br/>
+                            <p>{{product.desc}}</p>
+                        </div>           
+                    </div>
+                {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %} 
